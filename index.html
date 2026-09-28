@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>TaskFlow - Smart Task Management</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                <i class="fa-solid fa-check-double"></i>
+            </div>
+
+            <div>
+                <h2>TaskFlow</h2>
+                <span>Smart Productivity</span>
+            </div>
+
+        </div>
+
+
+        <nav>
+
+            <p class="menu-title">MENU</p>
+
+            <button class="nav-item active" data-filter="all">
+                <i class="fa-solid fa-house"></i>
+                <span>All Tasks</span>
+                <b id="allCount">0</b>
+            </button>
+
+            <button class="nav-item" data-filter="today">
+                <i class="fa-solid fa-calendar-day"></i>
+                <span>Today</span>
+                <b id="todayCount">0</b>
+            </button>
+
+            <button class="nav-item" data-filter="important">
+                <i class="fa-solid fa-star"></i>
+                <span>Important</span>
+                <b id="importantCount">0</b>
+            </button>
+
+            <button class="nav-item" data-filter="reminders">
+                <i class="fa-solid fa-bell"></i>
+                <span>Reminders</span>
+                <b id="reminderCount">0</b>
+            </button>
+
+            <button class="nav-item" data-filter="completed">
+                <i class="fa-solid fa-circle-check"></i>
+                <span>Completed</span>
+                <b id="completedCount">0</b>
+            </button>
+
+            <button class="nav-item" data-filter="overdue">
+                <i class="fa-solid fa-clock"></i>
+                <span>Overdue</span>
+                <b id="overdueCount">0</b>
+            </button>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <button id="themeBtn" class="side-action">
+                <i class="fa-solid fa-moon"></i>
+                Dark Mode
+            </button>
+
+            <button id="clearCompleted" class="side-action danger">
+                <i class="fa-solid fa-trash"></i>
+                Clear Completed
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN -->
+    <main class="main">
+
+        <!-- HEADER -->
+        <header class="header">
+
+            <div>
+
+                <p class="welcome">
+                    WELCOME BACK 👋
+                </p>
+
+                <h1>My Tasks</h1>
+
+                <p class="date" id="currentDate"></p>
+
+            </div>
+
+
+            <div class="header-actions">
+
+                <div class="search-box">
+
+                    <i class="fa-solid fa-search"></i>
+
+                    <input
+                        type="text"
+                        id="searchInput"
+                        placeholder="Search tasks...">
+
+                </div>
+
+
+                <button class="icon-btn" id="themeTopBtn">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+
+
+                <button class="add-btn" id="openModal">
+
+                    <i class="fa-solid fa-plus"></i>
+
+                    Add Task
+
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <!-- STATS -->
+        <section class="stats">
+
+            <div class="stat-card">
+
+                <div class="stat-icon blue">
+                    <i class="fa-solid fa-list-check"></i>
+                </div>
+
+                <div>
+                    <span>Total Tasks</span>
+                    <strong id="totalTasks">0</strong>
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon orange">
+                    <i class="fa-solid fa-hourglass-half"></i>
+                </div>
+
+                <div>
+                    <span>Pending</span>
+                    <strong id="pendingTasks">0</strong>
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon green">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+
+                <div>
+                    <span>Completed</span>
+                    <strong id="doneTasks">0</strong>
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon purple">
+                    <i class="fa-solid fa-chart-line"></i>
+                </div>
+
+                <div>
+                    <span>Progress</span>
+                    <strong id="progressText">0%</strong>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- PROGRESS -->
+        <section class="progress-section">
+
+            <div class="progress-heading">
+
+                <div>
+
+                    <h3>Today's Progress</h3>
+
+                    <p>
+                        Keep going, you're doing great!
+                    </p>
+
+                </div>
+
+                <strong id="progressPercent">
+                    0%
+                </strong>
+
+            </div>
+
+
+            <div class="progress-bar">
+
+                <div id="progressFill"></div>
+
+            </div>
+
+        </section>
+
+
+        <!-- TASK HEADER -->
+        <div class="task-header">
+
+            <div>
+
+                <h2 id="sectionTitle">
+                    All Tasks
+                </h2>
+
+                <span id="taskCountText">
+                    0 tasks
+                </span>
+
+            </div>
+
+
+            <div class="filters">
+
+                <button
+                    class="filter-btn active"
+                    data-status="all">
+
+                    All
+
+                </button>
+
+                <button
+                    class="filter-btn"
+                    data-status="pending">
+
+                    Pending
+
+                </button>
+
+                <button
+                    class="filter-btn"
+                    data-status="completed">
+
+                    Completed
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- TASK LIST -->
+        <section
+            id="taskList"
+            class="task-list">
+        </section>
+
+
+        <!-- EMPTY -->
+        <section
+            id="emptyState"
+            class="empty-state">
+
+            <div class="empty-icon">
+
+                <i class="fa-solid fa-clipboard-list"></i>
+
+            </div>
+
+            <h3>No tasks found</h3>
+
+            <p>
+                Add your first task and start being productive.
+            </p>
+
+            <button
+                class="add-btn"
+                id="emptyAddBtn">
+
+                <i class="fa-solid fa-plus"></i>
+
+                Create Task
+
+            </button>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+
+<!-- =========================
+     ADD TASK MODAL
+========================= -->
+
+<div
+    class="modal-overlay"
+    id="modal">
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <div>
+
+                <h2 id="modalTitle">
+                    Create New Task
+                </h2>
+
+                <p>
+                    Add details about your task
+                </p>
+
+            </div>
+
+
+            <button
+                id="closeModal"
+                class="close-btn">
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+        </div>
+
+
+        <form id="taskForm">
+
+            <input
+                type="hidden"
+                id="taskId">
+
+
+            <!-- TITLE -->
+            <label>Task Title</label>
+
+            <input
+                type="text"
+                id="taskTitle"
+                placeholder="e.g. Complete Java Project"
+                required>
+
+
+            <!-- DESCRIPTION -->
+            <label>Description</label>
+
+            <textarea
+                id="taskDescription"
+                placeholder="Add task details..."></textarea>
+
+
+            <!-- CATEGORY / PRIORITY -->
+            <div class="form-row">
+
+                <div>
+
+                    <label>Category</label>
+
+                    <select id="taskCategory">
+
+                        <option value="Work">
+                            💼 Work
+                        </option>
+
+                        <option value="Personal">
+                            🏠 Personal
+                        </option>
+
+                        <option value="Study">
+                            📚 Study
+                        </option>
+
+                        <option value="Shopping">
+                            🛒 Shopping
+                        </option>
+
+                        <option value="Health">
+                            ❤️ Health
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div>
+
+                    <label>Priority</label>
+
+                    <select id="taskPriority">
+
+                        <option value="Low">
+                            Low
+                        </option>
+
+                        <option
+                            value="Medium"
+                            selected>
+
+                            Medium
+
+                        </option>
+
+                        <option value="High">
+                            High
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <!-- DUE DATE -->
+            <label>Due Date</label>
+
+            <input
+                type="date"
+                id="taskDate">
+
+
+            <!-- IMPORTANT -->
+            <div class="important-check">
+
+                <input
+                    type="checkbox"
+                    id="taskImportant">
+
+                <label for="taskImportant">
+
+                    <i class="fa-solid fa-star"></i>
+
+                    Mark as important
+
+                </label>
+
+            </div>
+
+
+            <!-- =========================
+                 REMINDER
+            ========================== -->
+
+            <div class="reminder-box">
+
+                <div class="reminder-title">
+
+                    <div class="reminder-icon">
+
+                        <i class="fa-solid fa-bell"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h4>
+                            Set Reminder
+                        </h4>
+
+                        <p>
+                            Get notified about this task
+                        </p>
+
+                    </div>
+
+
+                    <label class="switch">
+
+                        <input
+                            type="checkbox"
+                            id="reminderEnabled">
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+
+                <!-- REMINDER FIELDS -->
+
+                <div
+                    id="reminderFields"
+                    class="reminder-fields">
+
+                    <div>
+
+                        <label>
+                            Reminder Date
+                        </label>
+
+                        <input
+                            type="date"
+                            id="reminderDate">
+
+                    </div>
+
+
+                    <div>
+
+                        <label>
+                            Reminder Time
+                        </label>
+
+                        <input
+                            type="time"
+                            id="reminderTime">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ACTIONS -->
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    class="cancel-btn"
+                    id="cancelModal">
+
+                    Cancel
+
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="save-btn">
+
+                    <i class="fa-solid fa-check"></i>
+
+                    Save Task
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
